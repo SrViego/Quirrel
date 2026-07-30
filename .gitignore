@@ -1,0 +1,5 @@
+data/*.bak
+data/memory.json
+.env
+*.log
+node_modules/
