@@ -1,7 +1,7 @@
 {
   "name": "quirrel-companion",
-  "version": "1.0.0",
-  "description": "Quirrel — companhia local Hallownest (terminal, sem Discord).",
+  "version": "1.1.0",
+  "description": "Quirrel — companhia local Hallownest (notas, diário, foco, lore, temas).",
   "main": "src/index.js",
   "bin": {
     "quirrel": "./src/index.js"

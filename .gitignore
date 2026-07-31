@@ -1,5 +1,7 @@
 data/*.bak
 data/memory.json
+data/diario/
+data/exports/
 .env
 *.log
 node_modules/

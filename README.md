@@ -1,11 +1,13 @@
 # Quirrel — companhia no terminal
 
-Companheiro **local** (sem Discord): conversa no teu terminal, com clima de Hallownest.
+Companheiro **local** (sem Discord): conversa no terminal, clima de Hallownest · v1.1  
+Fala em **português do Brasil**.
 
 ```
 HallownestBots/
-  Morgana/     ← bot Discord (jogos, economia)
-  Quirrel/     ← companhia no PC (este)
+  Morgana/   Discord
+  Quirrel/   companhia no PC (este)
+  LiveBot/   Twitch
 ```
 
 ---
@@ -14,59 +16,82 @@ HallownestBots/
 
 ```sh
 cd ~/Documentos/HallownestBots/Quirrel
-node src/index.js
-# ou
 npm start
+# ou: node src/index.js
 ```
 
-Opcional — atalho no PATH:
+Opcional no PATH:
 
 ```sh
-mkdir -p ~/.local/bin
 ln -sf ~/Documentos/HallownestBots/Quirrel/src/index.js ~/.local/bin/quirrel
 chmod +x ~/Documentos/HallownestBots/Quirrel/src/index.js
-# depois: quirrel
 ```
 
 ---
 
-## Uso
+## Comandos
 
-Escreve e carrega **Enter**. Comandos:
-
-| Comando | Efeito |
-|---------|--------|
-| `/ajuda` | lista |
-| `/oi` | cumprimento |
-| `/citacao` | lore |
-| `/lembra …` | nota sobre ti |
-| `/nota` / `/esqueci` | ver / apagar |
+### Memória
+| | |
+|--|--|
+| `/lembra …` | guarda uma nota (várias) |
+| `/notas` | lista |
+| `/nota [n]` | mostra #n ou a última |
+| `/esquece [n]` | apaga |
 | `/nome Viego` | como te chamar |
-| `/status` | memória + API |
-| `/sair` | tchau |
+| `/humor 1-5` | humor do dia |
+| `/diario texto` | diário de hoje |
+| `/diario ver [data]` | ler diário |
+
+### Hallownest
+| | |
+|--|--|
+| `/oi` | cumprimento (manhã/tarde/noite) |
+| `/citacao [quem]` | lore |
+| `/personagem [nome]` | quem é quem |
+| `/mapa` | dica / reflexão do dia |
+
+### Sessão
+| | |
+|--|--|
+| `/historico [n]` | últimas falas |
+| `/foco 25` | timer de foco (aviso ao acabar) |
+| `/foco off` | cancela |
+| `/reset` | limpa histórico da sessão |
+| `/exporta` | `.md` em `data/exports/` |
+| `/tema moss` | moss · void · pale · coral · dirt |
+| `/status` | resumo |
+| `/limpar` | limpa a tela |
+| `/sair` | tchau + resumo da sessão |
+
+Escreve sem `/` pra conversar (local ou Grok se tiver chave).
 
 ---
 
-## API opcional (Grok)
-
-Sem chave funciona em **modo local** (frases + memória).
-
-Com [xAI](https://console.x.ai/):
+## Config
 
 ```sh
 cp .env.example .env
 # XAI_API_KEY=xai-...
+# QUIRREL_THEME=moss
+# USER_NAME=Viego
 ```
 
 ---
 
-## Ficheiros
+## Arquivos
 
-- `src/index.js` — chat REPL  
-- `src/personality.js` — personalidade e lore  
-- `src/memory.js` — `data/memory.json`  
-- `src/ai.js` — xAI opcional  
+| Path | |
+|------|--|
+| `src/index.js` | REPL + comandos |
+| `src/personality.js` | voz, lore, mapa |
+| `src/memory.js` | notas, diário, humor |
+| `src/theme.js` | cores do terminal |
+| `src/ai.js` | xAI opcional |
+| `data/memory.json` | memória |
+| `data/diario/` | diários por dia |
+| `data/exports/` | exports |
 
 ---
 
-🕯️ *“É fácil se perder nestas terras. Eu mesmo já me perdi mais de uma vez.”*
+🕯️ *“É fácil se perder nessas terras. Eu mesmo já me perdi mais de uma vez.”*

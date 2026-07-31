@@ -3,22 +3,37 @@
  * Sem XAI_API_KEY → null (usa personality.localReply).
  */
 
-async function chatWithXai(userMessage, { history = [], userName } = {}) {
+async function chatWithXai(
+  userMessage,
+  { history = [], userName, notes = [], mood = null } = {}
+) {
   const key = process.env.XAI_API_KEY?.trim();
   if (!key) return null;
 
   const model = process.env.XAI_MODEL || 'grok-3-mini';
+  const noteHint = notes?.length
+    ? `Notas que você guardou sobre o usuário: ${notes
+        .slice(-5)
+        .map((n) => n.text)
+        .join(' | ')}`
+    : '';
+  const moodHint =
+    mood != null ? `Humor do usuário hoje (1-5): ${mood}.` : '';
+
   const messages = [
     {
       role: 'system',
       content: [
-        'Tu és o Quirrel, de Hollow Knight / Hallownest.',
+        'Você é o Quirrel, de Hollow Knight / Hallownest.',
         'Companheiro de conversa no terminal: curioso, gentil, aventureiro.',
-        'Respostas curtas (2–6 frases), em português (espelha o user).',
-        userName ? `O utilizador gosta de ser chamado: ${userName}.` : '',
-        'Não sejas sermão. Não inventes ser terapeuta.',
-        'Se o user estiver em crise grave, sugere ajuda humana real.',
-        'Podes usar leve flavor de Hallownest sem forçar.'
+        'Respostas curtas (2–6 frases), em português do Brasil natural (você, tá, pra, etc.).',
+        'NÃO use português de Portugal (tu, estás, contigo, fixe, telemóvel).',
+        userName ? `O usuário gosta de ser chamado: ${userName}.` : '',
+        noteHint,
+        moodHint,
+        'Não seja sermão. Não invente ser terapeuta.',
+        'Se o usuário estiver em crise grave, sugira ajuda humana de verdade.',
+        'Pode usar leve flavor de Hallownest sem forçar.'
       ]
         .filter(Boolean)
         .join(' ')
