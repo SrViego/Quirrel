@@ -262,6 +262,10 @@ function handleSlash(line) {
             : null;
       if (day || !arg) {
         const d = day || memory.todayKey();
+        if (!memory.isValidDay(d)) {
+          console.log(c.yellow('Data inválida. Use AAAA-MM-DD, ex.: /diario ver 2026-07-31'));
+          return true;
+        }
         const body = memory.readDiary(d);
         if (!body) {
           const days = memory.listDiaryDays().slice(0, 5);
@@ -431,7 +435,11 @@ async function main() {
     }
 
     if (text.startsWith('/') || text.startsWith(':')) {
-      handleSlash(text);
+      try {
+        handleSlash(text);
+      } catch (err) {
+        console.error(col().yellow(`Erro: ${err.message}`));
+      }
       rl.setPrompt(col().cyan(`${mem.name}> `));
       rl.prompt();
       return;

@@ -8,9 +8,16 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "chat": "node src/index.js"
+    "chat": "node src/index.js",
+    "lint": "eslint .",
+    "check": "node -e \"for (const f of require('fs').readdirSync('src')) if (f.endsWith('.js')) require('child_process').execFileSync(process.execPath, ['--check', 'src/' + f], { stdio: 'inherit' })\""
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0"
   }
 }

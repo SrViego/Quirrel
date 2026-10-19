@@ -42,19 +42,29 @@ async function chatWithXai(
     { role: 'user', content: userMessage }
   ];
 
-  const res = await fetch('https://api.x.ai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature: 0.85,
-      max_tokens: 450
-    })
-  });
+  const timeoutMs = Number(process.env.XAI_TIMEOUT_MS || 30000);
+  let res;
+  try {
+    res = await fetch('https://api.x.ai/v1/chat/completions', {
+      signal: AbortSignal.timeout(timeoutMs),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${key}`
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: 0.85,
+        max_tokens: 450
+      })
+    });
+  } catch (err) {
+    // timeout / rede → null (index.js cai pro modo local)
+    const why = err?.name === 'TimeoutError' ? `timeout ${timeoutMs}ms` : err?.message;
+    console.error('[ai] xAI indisponível:', why);
+    return null;
+  }
 
   if (!res.ok) {
     const errText = await res.text().catch(() => '');
@@ -62,7 +72,8 @@ async function chatWithXai(
     return null;
   }
 
-  const json = await res.json();
+  const json = await res.json().catch(() => null);
+  if (!json) return null;
   return json.choices?.[0]?.message?.content?.trim() || null;
 }
 

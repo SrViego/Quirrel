@@ -75,7 +75,15 @@ cp .env.example .env
 # XAI_API_KEY=xai-...
 # QUIRREL_THEME=moss
 # USER_NAME=Viego
+# XAI_TIMEOUT_MS=30000   (sem resposta nesse tempo → resposta local)
 ```
+
+### Privacidade (modo xAI)
+
+Com `XAI_API_KEY` definida, cada mensagem é enviada para a API da xAI junto com
+o seu nome, as **últimas 5 notas** (`/lembra`), o **humor do dia** (`/humor`) e as
+últimas mensagens da sessão. O diário **não** é enviado. Sem a chave, tudo fica
+só no seu PC (`data/`).
 
 ---
 
