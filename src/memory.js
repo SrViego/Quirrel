@@ -62,6 +62,16 @@ function load() {
 }
 
 function save(data) {
+  try {
+    saveUnsafe(data);
+    return true;
+  } catch (err) {
+    console.error(`[memória] não consegui salvar (${err.message}). Continuo sem gravar.`);
+    return false;
+  }
+}
+
+function saveUnsafe(data) {
   const dir = path.dirname(file);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   const out = {
@@ -130,7 +140,14 @@ function getMood(data, day = todayKey()) {
   return data.moodByDay?.[day] ?? null;
 }
 
+const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDay(day) {
+  return typeof day === 'string' && DAY_RE.test(day);
+}
+
 function diaryPath(day = todayKey()) {
+  if (!isValidDay(day)) throw new Error(`Data inválida: ${day} (use AAAA-MM-DD)`);
   return path.join(diaryDir, `${day}.md`);
 }
 
@@ -148,6 +165,7 @@ function appendDiary(text, day = todayKey()) {
 }
 
 function readDiary(day = todayKey()) {
+  if (!isValidDay(day)) return null;
   const p = diaryPath(day);
   if (!fs.existsSync(p)) return null;
   return fs.readFileSync(p, 'utf8');
@@ -223,6 +241,7 @@ module.exports = {
   setMood,
   getMood,
   todayKey,
+  isValidDay,
   appendDiary,
   readDiary,
   listDiaryDays,
